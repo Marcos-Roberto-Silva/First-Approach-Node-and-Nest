@@ -3,7 +3,7 @@ export interface Player {
   readonly phoneNumber: string;
   readonly email: string;
   name: string;
-  rankings: string;
+  ranking: string;
   positionRanking: number;
   urlPlayerPicture: string;
 }
