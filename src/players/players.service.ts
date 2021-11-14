@@ -9,7 +9,21 @@ export class PlayersService {
   private readonly logger = new Logger(PlayersService.name);
 
   async createUpdatePlayer(playerCreateDto: PlayerCreateDto): Promise<void> {
-    this.create(playerCreateDto);
+    const { email } = playerCreateDto;
+
+    const playerFound = await this.players.find(
+      (player) => player.email === email,
+    );
+
+    if (playerFound) {
+      this.update(playerFound, playerCreateDto);
+    } else {
+      this.create(playerCreateDto);
+    }
+  }
+
+  async getAllPlayers(): Promise<Player[]> {
+    return this.players;
   }
 
   private create(playerCreateDto: PlayerCreateDto): void {
@@ -27,5 +41,11 @@ export class PlayersService {
 
     this.players.push(playerCreated);
     this.logger.log(`createUpdatePlayer: ${JSON.stringify(playerCreated)}`);
+  }
+
+  private update(playerFound: Player, playerCreateDto: PlayerCreateDto): void {
+    const { name } = playerCreateDto;
+
+    playerFound.name = name;
   }
 }
