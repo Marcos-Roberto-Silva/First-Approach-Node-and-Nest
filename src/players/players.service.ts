@@ -11,7 +11,7 @@ export class PlayersService {
   async createUpdatePlayer(playerCreateDto: PlayerCreateDto): Promise<void> {
     const { email } = playerCreateDto;
 
-    const playerFound = await this.players.find(
+    const playerFound = this.players.find(
       (player) => player.email === email,
     );
 
