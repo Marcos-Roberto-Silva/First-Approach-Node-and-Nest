@@ -5,11 +5,11 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { v4 as uuid } from 'uuid';
 
-
 @Injectable()
 export class PlayersService {
-
-  constructor(@InjectModel('Player') private readonly playerModel: Model<Player>){}
+  constructor(
+    @InjectModel('Player') private readonly playerModel: Model<Player>,
+  ) {}
 
   private readonly logger = new Logger(PlayersService.name);
 
@@ -17,7 +17,6 @@ export class PlayersService {
     const { email } = playerCreateDto;
 
     const playerFound = await this.playerModel.findOne({ email }).exec();
-
 
     if (playerFound) {
       this.update(playerCreateDto);
@@ -31,24 +30,28 @@ export class PlayersService {
   }
 
   async getPlayerByEmail(email: string): Promise<Player> {
-     const playerFound = this.playerModel.findOne({ email }).exec();
+    const playerFound = this.playerModel.findOne({ email }).exec();
 
-     if (!playerFound) {
-        throw new NotFoundException(`Player with email ${email} not found`);
-     }
-        return playerFound;
+    if (!playerFound) {
+      throw new NotFoundException(`Player with email ${email} not found`);
+    }
+    return playerFound;
   }
   async deletePlayer(email: string): Promise<any> {
-   return await this.playerModel.remove({ email }).exec();
+    return await this.playerModel.remove({ email }).exec();
   }
 
   private async create(playerCreateDto: PlayerCreateDto): Promise<Player> {
-
     const playerCreated = new this.playerModel(playerCreateDto);
     return await playerCreated.save();
   }
 
   private async update(playerCreateDto: PlayerCreateDto): Promise<Player> {
-    return await this.playerModel.findOneAndUpdate({ email: playerCreateDto.email }, { $set: playerCreateDto }).exec();
+    return await this.playerModel
+      .findOneAndUpdate(
+        { email: playerCreateDto.email },
+        { $set: playerCreateDto },
+      )
+      .exec();
   }
 }
