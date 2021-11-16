@@ -6,8 +6,9 @@ import { PlayersService } from './players.service';
 export class PlayersController {
   constructor(private readonly playersService: PlayersService) {}
 
-  @Post() async createUpdatePlayer(@Body() playerCreateDto: PlayerCreateDto) {
+  @Post() async createUpdatePlayer(@Body() playerCreateDto: PlayerCreateDto):Promise<object> {
     await this.playersService.createUpdatePlayer(playerCreateDto);
+    return { "message": "Player saved."}
   }
 
   @Get() async getPlayers(
@@ -20,7 +21,8 @@ export class PlayersController {
   }
 
   @Delete() async deletePlayer( 
-      @Query('email') email: string): Promise<void> {
+      @Query('email') email: string): Promise<object> {
         this.playersService.deletePlayer(email);
-  }
+        return {"message": "Player was deleted successfully"}
+      }
 }
