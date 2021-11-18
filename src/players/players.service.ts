@@ -70,6 +70,6 @@ export class PlayersService {
     }
 
     await this.playerModel.deleteOne({ _id }).exec();
-    return { message: `Player with id ${_id} deleted` };
+    return { message: `Player with id ${_id} was deleted` };
   }
 }
