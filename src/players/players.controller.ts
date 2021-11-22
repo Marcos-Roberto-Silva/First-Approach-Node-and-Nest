@@ -54,7 +54,7 @@ export class PlayersController {
   }
 
   @Delete('/:_id') async deletePlayer(
-    @Query('_id', PlyersValidatorParameter) _id: string,
+    @Param('_id', PlyersValidatorParameter) _id: string,
   ): Promise<{ message: string }> {
     this.playersService.deletePlayer(_id);
     return { message: 'Player was deleted successfully' };
