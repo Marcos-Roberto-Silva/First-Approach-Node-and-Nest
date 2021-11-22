@@ -36,12 +36,11 @@ export class PlayersController {
     @Body()
     playerUpdateDto: PlayerUpdateDto,
     @Param('_id', PlyersValidatorParameter) _id: string,
-  ): Promise<Player> {
-    const updatedPlayer = await this.playersService.playerUpdate(
-      _id,
-      playerUpdateDto,
-    );
-    return updatedPlayer;
+  ): Promise<{ message: string }> {
+    await this.playersService.playerUpdate(_id, playerUpdateDto);
+    console.log('Vam ve: ', playerUpdateDto);
+
+    return { message: 'Player was updadted' };
   }
 
   @Get() async getAllPlayers(): Promise<Player[]> {
