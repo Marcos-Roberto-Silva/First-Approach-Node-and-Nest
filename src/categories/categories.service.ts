@@ -23,4 +23,8 @@ export class CategoriesService {
     const categoryCreated = new this.categoryModel(createCategoryDTO);
     return await categoryCreated.save();
   }
+
+  async getAllCategories(): Promise<Array<Category>> {
+    return await this.categoryModel.find().exec();
+  }
 }
