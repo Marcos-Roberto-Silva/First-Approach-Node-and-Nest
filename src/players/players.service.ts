@@ -64,7 +64,6 @@ export class PlayersService {
 
   async deletePlayer(_id: string): Promise<{ message: string }> {
     const playerFound = this.playerModel.findOne({ _id }).exec();
-    console.log('test:', playerFound);
 
     if (!playerFound) {
       throw new NotFoundException(playerNotFound(_id));
