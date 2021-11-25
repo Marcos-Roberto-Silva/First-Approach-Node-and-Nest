@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { CategoryUpdateDTO } from './dto/categoryUpdateDTO.dto';
 import { CreateCategoryDTO } from './dto/create-category.dto';
 import { Category } from './interfaces/category.interface';
 
@@ -40,5 +41,20 @@ export class CategoriesService {
     }
 
     return categoryFound;
+  }
+
+  async categoryUpdate(
+    category: string,
+    categoryUpdateDTO: CategoryUpdateDTO,
+  ): Promise<void> {
+    const categoryFound = await this.categoryModel.findOne({ category }).exec();
+
+    if (!categoryFound) {
+      throw new NotFoundException(`Category ${category} does not exist`);
+    }
+
+    await this.categoryModel
+      .findOneAndUpdate({ category }, { $set: categoryUpdateDTO })
+      .exec();
   }
 }
