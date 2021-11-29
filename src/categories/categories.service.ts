@@ -57,4 +57,22 @@ export class CategoriesService {
       .findOneAndUpdate({ category }, { $set: categoryUpdateDTO })
       .exec();
   }
+
+  async addPlayerCategory(params: string[]): Promise<{ message: string }> {
+    const category = params['category'];
+    const idPlayer = params['idPlayer'];
+
+    const categoryFound = await this.categoryModel.findOne({ category }).exec();
+
+    if (!categoryFound) {
+      throw new BadRequestException(`Category ${category} not found`);
+    }
+
+    categoryFound.players.push(idPlayer);
+    await this.categoryModel
+      .findOneAndUpdate({ category }, { $set: categoryFound })
+      .exec();
+
+    return { message: 'Player was saved successfully.' };
+  }
 }
